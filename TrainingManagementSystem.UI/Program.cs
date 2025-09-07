@@ -24,6 +24,8 @@ namespace TrainingManagementSystem.UI
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IGradeService, GradeService>();
 
 
             var app = builder.Build();

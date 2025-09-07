@@ -19,5 +19,9 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
         // Helpers
         IEnumerable<SelectListItem> GetCoursesDropdown();
         SessionVM GetCreateVM();
+
+        // For Remote Validation
+        bool ValidateStartDate(DateTime startDate);
+        bool ValidateEndDate(DateTime startDate, DateTime endDate);
     }
 }

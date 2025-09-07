@@ -1,0 +1,19 @@
+﻿@model SessionVM
+
+@{
+    ViewBag.Title = "Create Session";
+}
+
+<h2>Create Session</h2>
+
+<form asp-action="Create" method="post">
+
+    <partial name="_SessionForm" />
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

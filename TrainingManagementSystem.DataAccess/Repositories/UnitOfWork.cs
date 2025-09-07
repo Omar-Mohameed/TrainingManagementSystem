@@ -15,14 +15,14 @@ namespace TrainingManagementSystem.DataAccess.Repositories
         public ICourseRepository Courses { get; private set; }
         public IUserRepository Users { get; private set; }
         public ISessionRepository Sessions { get; private set; }
-        public IGenericRepository<Grade> Grades { get; private set; }
+        public IGradeRepository Grades { get; private set; }
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             Courses = new CourseRepository(_context);
             Users = new UserRepository(_context);
             Sessions = new SessionRepository(_context);
-            Grades = new GenericRepository<Grade>(_context);
+            Grades = new GradeRepository(_context);
         }
         public int Save()
         {

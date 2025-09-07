@@ -117,5 +117,17 @@ namespace TrainingManagementSystem.Business.Services
             _unitOfWork.Save();
             return true;
         }
+
+        // Remote Validation
+        public bool ValidateStartDate(DateTime startDate)
+        {
+            // Start date must not be in the past
+            return startDate.Date >= DateTime.Today;
+        }
+        public bool ValidateEndDate(DateTime startDate, DateTime endDate)
+        {
+            // End date must be after start date
+            return endDate.Date > startDate.Date;
+        }
     }
 }

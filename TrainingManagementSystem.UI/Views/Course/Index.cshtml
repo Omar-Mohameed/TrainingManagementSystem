@@ -6,39 +6,14 @@
 
 <h2>Courses</h2>
 
-<!--Alert-->
-@if (TempData["SuccessMessage"] != null)
-{
-    <div id="success-alert" class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
-    <script>
-        setTimeout(function () {
-            var alert = document.getElementById("success-alert");
-            if (alert) {
-                alert.style.transition = "opacity 0.5s ease"; 
-                alert.style.opacity = "0";
-
-                // نخفيه تمامًا بعد نصف ثانية
-                setTimeout(function () {
-                    alert.style.display = "none";
-                }, 500);
-            }
-        }, 5000); // يختفي تلقائياً بعد 5 ثواني
-    </script>
-}
-
-
-<!--Alert-->
-
+<partial name="_Alert" />
 
 
 <form method="get" class="form-inline mb-3">
     <!--Search Bar-->
     <input type="text" name="searchTerm" value="@ViewBag.searchTerm" class="form-control mr-2" placeholder="Search..." />
     <button type="submit" class="btn btn-primary">Search</button>
+    <a asp-action="Index" class="btn btn-secondary ml-2">Reset</a>
 </form>
 
 <table class="table table-striped">

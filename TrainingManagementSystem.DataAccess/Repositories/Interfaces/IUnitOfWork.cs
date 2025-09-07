@@ -12,7 +12,7 @@ namespace TrainingManagementSystem.DataAccess.Repositories.Interfaces
         ICourseRepository Courses { get; }
         IUserRepository Users { get; }
         ISessionRepository Sessions { get; }
-        IGenericRepository<Grade> Grades { get; }
+        IGradeRepository Grades { get; }
         int Save();
     }
 }

@@ -17,7 +17,7 @@ namespace TrainingManagementSystem.Business.ViewModels
         [Display(Name = "Course")]
         public int CourseId { get; set; }
 
-        public string CourseName { get; set; } // للعرض فقط
+        public string? CourseName { get; set; } // للعرض فقط
 
         [Required(ErrorMessage = "Start Date is required.")]
         [DataType(DataType.Date)]
@@ -30,6 +30,6 @@ namespace TrainingManagementSystem.Business.ViewModels
         public DateTime EndDate { get; set; }
 
         // Dropdown for Courses
-        public IEnumerable<SelectListItem> Courses { get; set; }
+        public IEnumerable<SelectListItem>? Courses { get; set; }
     }
 }
