@@ -1,0 +1,17 @@
+﻿@model CourseVM
+@{
+    ViewBag.Title = "Edit Course";
+}
+
+<h2>Edit Course</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_CourseForm" />
+    <button type="submit" class="btn btn-outline-success">Update</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

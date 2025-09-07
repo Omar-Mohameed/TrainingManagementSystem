@@ -1,0 +1,15 @@
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\bin\Debug\net8.0\TrainingManagementSystem.Business.deps.json
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\bin\Debug\net8.0\TrainingManagementSystem.Business.dll
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\bin\Debug\net8.0\TrainingManagementSystem.Business.pdb
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\bin\Debug\net8.0\TrainingManagementSystem.DataAccess.dll
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\bin\Debug\net8.0\TrainingManagementSystem.DataAccess.pdb
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.csproj.AssemblyReference.cache
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.AssemblyInfoInputs.cache
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.AssemblyInfo.cs
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.csproj.CoreCompileInputs.cache
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\Training.8DBD883E.Up2Date
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.dll
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\refint\TrainingManagementSystem.Business.dll
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\TrainingManagementSystem.Business.pdb
+C:\Users\Omar\OneDrive\Desktop\Graduation Project\TrainingManagementSystem\TrainingManagementSystem.Business\obj\Debug\net8.0\ref\TrainingManagementSystem.Business.dll

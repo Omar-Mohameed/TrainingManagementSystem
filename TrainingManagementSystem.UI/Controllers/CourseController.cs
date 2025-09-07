@@ -1,0 +1,106 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using TrainingManagementSystem.Business.Services;
+using TrainingManagementSystem.Business.Services.Interfaces;
+using TrainingManagementSystem.Business.ViewModels;
+
+namespace TrainingManagementSystem.UI.Controllers
+{
+    public class CourseController : Controller
+    {
+        private readonly ICourseService courseService;
+        private readonly IUserService userService;
+
+        public CourseController(ICourseService courseService, IUserService userService)
+        {
+            this.courseService = courseService;
+            this.userService = userService;
+        }
+        // Get All
+        public IActionResult Index(string searchTerm, int pageNumber = 1, int pageSize = 5)
+        {
+            var courses = courseService.GetAll(searchTerm);
+
+            var totalCount = courses.Count();
+            var pagedCourses = courses.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.searchTerm = searchTerm;
+
+            return View(pagedCourses);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var courseVM = new CourseVM
+            {
+                Instructors = userService.GetAllInstructors()
+                                        .Select(i => new SelectListItem
+                                        {
+                                            Value = i.Id.ToString(),
+                                            Text = i.Name
+                                        })
+            };
+            return View(courseVM);
+        }
+        [HttpPost]
+        public IActionResult Create(CourseVM courseVM)
+        {
+            if(ModelState.IsValid)
+            {
+                courseService.Create(courseVM);
+                TempData["SuccessMessage"] = "Course created successfully.";
+                return RedirectToAction("Index");
+            }
+            return View(courseVM);
+        }
+
+        #region Edit
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var courseVM = courseService.GetById(id);
+            courseVM.Instructors = userService.GetAllInstructors()
+                                        .Select(i => new SelectListItem
+                                        {
+                                            Value = i.Id.ToString(),
+                                            Text = i.Name
+                                        });
+            if (courseVM == null) return NotFound();
+            return View(courseVM);
+        }
+        [HttpPost]
+        public IActionResult Edit(CourseVM courseVM)
+        {
+            if(ModelState.IsValid)
+            {
+                courseService.Update(courseVM);
+                TempData["SuccessMessage"] = "Course updated successfully.";
+                return RedirectToAction("Index");
+            }
+            return View(courseVM);
+        }
+        #endregion
+
+        #region Delete
+        public IActionResult Delete(int id)
+        {
+            var course = courseService.GetAll().FirstOrDefault(c => c.Id == id);
+            if (course == null)
+            {
+                return Json(new { success = false, message = "Course not found!" });
+            }
+            courseService.Delete(id);
+            return Json(new { success = true, message = "Course deleted successfully!" });
+        }
+        #endregion
+
+        // Check Unique Name
+        public IActionResult IsCourseNameUnique(string name, int id)
+        {
+            var isUnique = courseService.IsCourseNameUnique(name, id);
+            return Json(isUnique);
+        }
+    }
+}
