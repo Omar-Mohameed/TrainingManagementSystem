@@ -11,6 +11,11 @@ namespace TrainingManagementSystem.DataAccess.Models
     public class Course
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Code is required")]
+        [StringLength(20)]
+        public string Code { get; set; }
+
         [Required(ErrorMessage = "Course name is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Course name must be between 3 and 50 characters.")]
         [Remote(action: "IsCourseNameUnique", controller: "Course", AdditionalFields = "Id", ErrorMessage = "Course name already exists.")]
@@ -18,6 +23,10 @@ namespace TrainingManagementSystem.DataAccess.Models
 
         [Required(ErrorMessage = "Course Category is required.")]
         public string Category { get; set; }
+
+        [Range(1, 10, ErrorMessage = "Credits must be between 1 and 10")]
+        public int Credits { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [Required(ErrorMessage = "Instructor is required.")]
         public int InstructorId { get; set; }  // FK

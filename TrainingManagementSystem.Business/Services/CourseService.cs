@@ -53,7 +53,7 @@ namespace TrainingManagementSystem.Business.Services
 
                 query = query.Where(c => c.Name.ToLower().Contains(lowerSearchTerm)
                                       || c.Category.ToLower().Contains(lowerSearchTerm)
-                                      || c.Instructor.Name.ToLower().Contains(lowerSearchTerm));
+                                      || c.Code.ToLower().Contains(lowerSearchTerm));
             }
 
             var totalCourses = query.Count();
@@ -66,9 +66,12 @@ namespace TrainingManagementSystem.Business.Services
                 .Select(c => new CourseVM
                 {
                     Id = c.Id,
+                    Code = c.Code,
                     Name = c.Name,
                     Category = c.Category,
-                    InstructorName = c.Instructor.Name
+                    InstructorName = c.Instructor.Name,
+                    Credits = c.Credits,
+                    IsActive = c.IsActive
                 })
                 .ToList();
 
@@ -91,7 +94,10 @@ namespace TrainingManagementSystem.Business.Services
                 Name = course.Name,
                 Category = course.Category,
                 InstructorId = course.InstructorId,
-                InstructorName = course.Instructor?.Name
+                InstructorName = course.Instructor?.Name,
+                Code = course.Code,
+                Credits = course.Credits,
+                IsActive = course.IsActive
             };
         }
         public void Create(CourseVM courseVM)
@@ -99,22 +105,30 @@ namespace TrainingManagementSystem.Business.Services
             var course = new Course
             {
                 Name = courseVM.Name,
+                Code = courseVM.Code,
+                Credits = courseVM.Credits,
                 Category = courseVM.Category ,
-                InstructorId = courseVM.InstructorId
+                InstructorId = courseVM.InstructorId,
+                IsActive = courseVM.IsActive
             };
             unitOfWork.Courses.Add(course);
             unitOfWork.Save();
         }
         public void Update(CourseVM courseVM)
         {
-            var course = new Course
+            var course = unitOfWork.Courses.GetFirstOrDefault(c => c.Id == courseVM.Id);
+            if (course == null)
             {
-                Id = courseVM.Id,
-                Name = courseVM.Name,
-                Category = courseVM.Category,
-                InstructorId = courseVM.InstructorId
-            };
-            unitOfWork.Courses.Update(course);
+                throw new Exception("Course not found");
+            }
+
+            course.Name = courseVM.Name;
+            course.Code = courseVM.Code;
+            course.Credits = courseVM.Credits;
+            course.Category = courseVM.Category;
+            course.InstructorId = courseVM.InstructorId;
+            course.IsActive = courseVM.IsActive;
+
             unitOfWork.Save();
         }
         public void Delete(int id)

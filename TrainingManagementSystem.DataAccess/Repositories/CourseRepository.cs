@@ -25,8 +25,11 @@ namespace TrainingManagementSystem.DataAccess.Repositories
             if (CourseInDb != null)
             {
                 CourseInDb.Name = course.Name;
+                CourseInDb.Code = course.Code;
+                CourseInDb.Credits = course.Credits;
                 CourseInDb.Category = course.Category;
                 CourseInDb.InstructorId = course.InstructorId;
+                CourseInDb.IsActive = course.IsActive;
             }
         }
         public bool IsCourseNameUnique(string name, int id)

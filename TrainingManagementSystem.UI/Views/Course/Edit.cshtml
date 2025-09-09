@@ -5,12 +5,17 @@
 
 <h2>Edit Course</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
-    <partial name="_CourseForm" />
-    <button type="submit" class="btn btn-outline-success">Update</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-</form>
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Course</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <partial name="_CourseForm" model="Model" />
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
