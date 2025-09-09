@@ -22,8 +22,11 @@
     <thead>
         <tr>
             <th>Course</th>
+            <th>Instructor</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Mode</th>
+            <th>Location</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -34,8 +37,33 @@
             {
                 <tr>
                     <td>@session.CourseName</td>
+                    <td>@session.InstructorName</td>
                     <td>@session.StartDate.ToString("yyyy-MM-dd")</td>
                     <td>@session.EndDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (session.Mode == "Online")
+                        {
+                            <span class="badge bg-info">Online</span>
+                        }
+                        else if (session.Mode == "Offline")
+                        {
+                            <span class="badge bg-secondary">Offline</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Hybrid</span>
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(session.Location))
+                        {
+                            @session.Location
+                        }
+                        else
+                        {
+                            <span class="text-muted">N/A</span>
+                        }
+                    </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
                         <button class="btn btn-outline-danger btn-sm" onClick=DeleteItem("/Session/Delete/@session.Id")>Delete</button>
@@ -46,7 +74,7 @@
         else
         {
             <tr>
-                <td colspan="4" class="text-center">No sessions found.</td>
+                <td colspan="7" class="text-center">No sessions found.</td>
             </tr>
         }
     </tbody>

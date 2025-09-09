@@ -11,7 +11,7 @@ namespace TrainingManagementSystem.UI.Controllers
         {
             _sessionService = sessionService;
         }
-        public IActionResult Index(string searchCourseName, int pageNumber = 1, int pageSize = 2)
+        public IActionResult Index(string searchCourseName, int pageNumber = 1, int pageSize = 5)
         {
             var model = _sessionService.GetSessions(searchCourseName, pageNumber, pageSize);
             return View(model);
@@ -32,6 +32,7 @@ namespace TrainingManagementSystem.UI.Controllers
                 return RedirectToAction("Index");
             }
             model.Courses = _sessionService.GetCoursesDropdown();
+            model.Instructors = _sessionService.GetInstructorsDropdown();
             return View(model);
         }
         [HttpGet]
@@ -43,6 +44,7 @@ namespace TrainingManagementSystem.UI.Controllers
                 return NotFound();
             }
             sessionVM.Courses = _sessionService.GetCoursesDropdown();
+            sessionVM.Instructors = _sessionService.GetInstructorsDropdown();
             return View(sessionVM);
         }
         [HttpPost]
@@ -59,6 +61,7 @@ namespace TrainingManagementSystem.UI.Controllers
                 ModelState.AddModelError("", "Error while updating session");
             }
             model.Courses = _sessionService.GetCoursesDropdown();
+            model.Instructors = _sessionService.GetInstructorsDropdown();
             return View(model);
         }
         [HttpPost]

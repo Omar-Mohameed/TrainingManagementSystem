@@ -20,7 +20,7 @@ namespace TrainingManagementSystem.DataAccess.Models
         [Required(ErrorMessage = "Role is required.")]
         [Display(Name = "User Role")]
         public string Role { get; set; } // Admin, Instructor, Trainee
-
+        public bool IsActive { get; set; } = true;
         public ICollection<Grade> Grades { get; set; }
         public ICollection<Course> Courses { get; set; }
 

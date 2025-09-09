@@ -21,7 +21,7 @@ namespace TrainingManagementSystem.Business.Services
         }
         public SessionSearchViewModel GetSessions(string searchCourseName, int pageNumber, int pageSize)
         {
-            var query = _unitOfWork.Sessions.GetAll(includeProperties: "Course");
+            var query = _unitOfWork.Sessions.GetAll(includeProperties: "Course,Instructor");
             if (!string.IsNullOrEmpty(searchCourseName))
             {
                 query = query.Where(s => s.Course.Name.Contains(searchCourseName));
@@ -38,7 +38,11 @@ namespace TrainingManagementSystem.Business.Services
                     CourseId = s.CourseId,
                     CourseName = s.Course.Name,
                     StartDate = s.StartDate,
-                    EndDate = s.EndDate
+                    EndDate = s.EndDate,
+                    Mode = s.Mode,
+                    Location = s.Location,
+                    InstructorId = s.InstructorId,
+                    InstructorName = s.Instructor != null ? s.Instructor.Name : "N/A"
                 })
                 .ToList();
             return new SessionSearchViewModel
@@ -51,7 +55,7 @@ namespace TrainingManagementSystem.Business.Services
         }
         public SessionVM GetSessionById(int id)
         {
-            var session = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == id, includeProperties: "Course");
+            var session = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == id, includeProperties: "Course,Instructor");
             if (session == null) return null;
             return new SessionVM
             {
@@ -59,7 +63,11 @@ namespace TrainingManagementSystem.Business.Services
                 CourseId = session.CourseId,
                 CourseName = session.Course.Name,
                 StartDate = session.StartDate,
-                EndDate = session.EndDate
+                EndDate = session.EndDate,
+                Mode = session.Mode,
+                Location = session.Location,
+                InstructorId = session.InstructorId,
+                InstructorName = session.Instructor != null ? session.Instructor.Name : "N/A"
             };
         }
         public void CreateSession(SessionVM model)
@@ -68,7 +76,10 @@ namespace TrainingManagementSystem.Business.Services
             {
                 CourseId = model.CourseId,
                 StartDate = model.StartDate,
-                EndDate = model.EndDate
+                EndDate = model.EndDate,
+                Mode = model.Mode,
+                Location = model.Location,
+                InstructorId = model.InstructorId,
             };
 
             _unitOfWork.Sessions.Add(session);
@@ -88,6 +99,7 @@ namespace TrainingManagementSystem.Business.Services
         public IEnumerable<SelectListItem> GetCoursesDropdown()
         {
             return _unitOfWork.Courses.GetAll()
+                .OrderBy(c => c.Name)
                 .Select(c => new SelectListItem
                 {
                     Text = c.Name,
@@ -95,23 +107,39 @@ namespace TrainingManagementSystem.Business.Services
                 })
                 .ToList();
         }
-
+        public IEnumerable<SelectListItem> GetInstructorsDropdown()
+        {
+            return _unitOfWork.Users.GetAll()
+                .Where(u => u.Role == "Instructor")
+                .OrderBy(u => u.Name)
+                .Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+                .ToList();
+        }
         public SessionVM GetCreateVM()
         {
             return new SessionVM
             {
-                Courses = GetCoursesDropdown()
+                Courses = GetCoursesDropdown(),
+                Instructors = GetInstructorsDropdown()
             };
         }
 
         public bool UpdateSession(SessionVM model)
         {
-            var session = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == model.Id);
+            var session = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == model.Id, includeProperties: "Course,Instructor");
             if (session == null) return false;
 
             session.CourseId = model.CourseId;
+            session.InstructorId = model.InstructorId;
             session.StartDate = model.StartDate;
             session.EndDate = model.EndDate;
+            session.Mode = model.Mode;
+            session.Location = model.Location;
+
 
             _unitOfWork.Sessions.Update(session);
             _unitOfWork.Save();

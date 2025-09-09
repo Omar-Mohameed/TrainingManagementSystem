@@ -16,8 +16,7 @@ namespace TrainingManagementSystem.UI.Controllers
         }
         public IActionResult Index(string searchName, string searchRole, int pageNumber = 1)
         {
-            int PageSize = 2;
-            var model = userService.GetUsers(searchName, searchRole, pageNumber, PageSize);
+            var model = userService.GetUsers(searchName, searchRole, pageNumber);
             return View(model);
         }
 
@@ -48,7 +47,8 @@ namespace TrainingManagementSystem.UI.Controllers
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role,
+                IsActive = user.IsActive
             };
 
             return View(userVM);

@@ -11,13 +11,14 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
     public interface ISessionService
     {
         // List + Search + Pagination
-        SessionSearchViewModel GetSessions(string searchCourseName, int pageNumber, int pageSize);
+        SessionSearchViewModel GetSessions(string searchCourseName, int pageNumber, int pageSize=5);
         SessionVM GetSessionById(int id);
         void CreateSession(SessionVM model);
         bool UpdateSession(SessionVM model);
         bool DeleteSession(int id);
         // Helpers
         IEnumerable<SelectListItem> GetCoursesDropdown();
+        IEnumerable<SelectListItem> GetInstructorsDropdown();
         SessionVM GetCreateVM();
 
         // For Remote Validation

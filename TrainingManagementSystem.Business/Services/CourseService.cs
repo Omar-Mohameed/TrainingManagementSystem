@@ -42,7 +42,7 @@ namespace TrainingManagementSystem.Business.Services
         //}
 
 
-        public CourseIndexViewModel GetCourses(string searchTerm, int pageNumber = 1, int pageSize = 10)
+        public CourseIndexViewModel GetCourses(string searchTerm, int pageNumber = 1, int pageSize = 5)
         {
             var query = unitOfWork.Courses.GetAll(includeProperties: "Instructor");
 

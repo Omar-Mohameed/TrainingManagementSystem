@@ -42,7 +42,8 @@ namespace TrainingManagementSystem.Business.Services
             {
                 Name = userVM.Name,
                 Email = userVM.Email,
-                Role = userVM.Role
+                Role = userVM.Role,
+                IsActive = userVM.IsActive,
             };
             _unitOfWork.Users.Add(user);
             _unitOfWork.Save();
@@ -54,6 +55,7 @@ namespace TrainingManagementSystem.Business.Services
             user.Name = userVM.Name;
             user.Email = userVM.Email;
             user.Role = userVM.Role;
+            user.IsActive = userVM.IsActive;
             _unitOfWork.Users.Update(user);
             _unitOfWork.Save();
         }
@@ -67,23 +69,22 @@ namespace TrainingManagementSystem.Business.Services
             }
         }
 
-        public UserSearchViewModel GetUsers(string searchName, string searchRole, int pageNumber, int pageSize)
+        public UserSearchViewModel GetUsers(string searchName, string searchRole, int pageNumber, int pageSize=5)
         {
             var query = _unitOfWork.Users.GetAll();
 
-            // بحث بالاسم
             if (!string.IsNullOrEmpty(searchName))
             {
                 query = query.Where(u => u.Name.Contains(searchName));
             }
 
-            // بحث بالدور
             if (!string.IsNullOrEmpty(searchRole))
             {
                 query = query.Where(u => u.Role == searchRole);
             }
 
             var totalRecords = query.Count();
+            var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
 
             var users = query
                 .OrderBy(u => u.Name)
@@ -94,7 +95,8 @@ namespace TrainingManagementSystem.Business.Services
                     Id = u.Id,
                     Name = u.Name,
                     Email = u.Email,
-                    Role = u.Role
+                    Role = u.Role,
+                    IsActive = u.IsActive
                 })
                 .ToList();
 
@@ -104,7 +106,7 @@ namespace TrainingManagementSystem.Business.Services
                 SearchName = searchName,
                 SearchRole = searchRole,
                 CurrentPage = pageNumber,
-                TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize)
+                TotalPages = totalPages
             };
         }
 

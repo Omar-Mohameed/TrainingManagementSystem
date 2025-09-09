@@ -9,6 +9,14 @@
 </div>
 
 <div class="form-group">
+    <label asp-for="InstructorId"></label>
+    <select asp-for="InstructorId" asp-items="Model.Instructors" class="form-control">
+        <option value="">-- Select Instructor --</option>
+    </select>
+    <span asp-validation-for="InstructorId" class="text-danger"></span>
+</div>
+
+<div class="form-group">
     <label asp-for="StartDate"></label>
     <input asp-for="StartDate" class="form-control" type="date" />
     <span asp-validation-for="StartDate" class="text-danger"></span>
@@ -18,6 +26,23 @@
     <label asp-for="EndDate"></label>
     <input asp-for="EndDate" class="form-control" type="date" />
     <span asp-validation-for="EndDate" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Mode"></label>
+    <select asp-for="Mode" class="form-control">
+        <option value="">-- Select Mode --</option>
+        <option value="Online">Online</option>
+        <option value="Offline">Offline</option>
+        <option value="Hybrid">Hybrid</option>
+    </select>
+    <span asp-validation-for="Mode" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Location"></label>
+    <input asp-for="Location" class="form-control" placeholder="Enter location or link" />
+    <span asp-validation-for="Location" class="text-danger"></span>
 </div>
 
 @section Scripts {

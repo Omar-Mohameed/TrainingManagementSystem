@@ -23,6 +23,8 @@ namespace TrainingManagementSystem.Business.ViewModels
 
         [Required(ErrorMessage = "Role is required.")]
         public string Role { get; set; } // Admin, Instructor, Trainee
+        public bool IsActive { get; set; }
+
     }
 }
 

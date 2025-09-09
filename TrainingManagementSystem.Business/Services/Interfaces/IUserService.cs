@@ -10,7 +10,7 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
 {
     public interface IUserService
     {
-        UserSearchViewModel GetUsers(string searchName, string searchRole, int pageNumber, int pageSize);
+        UserSearchViewModel GetUsers(string searchName, string searchRole, int pageNumber, int pageSize=5);
         IEnumerable<User> GetAllUsers();
         IEnumerable<User> GetAllInstructors();
         IEnumerable<User> GetAllTrainees();

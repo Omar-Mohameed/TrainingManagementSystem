@@ -73,7 +73,7 @@
 
 <nav>
     <ul class="pagination">
-        @if (Model.TotalPages > 1)
+        @if (Model.TotalPages >= 1)
         {
             <!-- First Page -->
             <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">

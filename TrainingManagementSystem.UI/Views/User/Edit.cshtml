@@ -12,31 +12,7 @@
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
 
-            <!-- Name -->
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <!-- Email -->
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <!-- Role -->
-            <div class="form-group">
-                <label asp-for="Role"></label>
-                <select asp-for="Role" class="form-control">
-                    <option value="">--Select Role--</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Instructor">Instructor</option>
-                    <option value="Trainee">Trainee</option>
-                </select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
+            <partial name="_UserForm" />
 
             <!-- Buttons -->
             <div class="form-group mt-3">
