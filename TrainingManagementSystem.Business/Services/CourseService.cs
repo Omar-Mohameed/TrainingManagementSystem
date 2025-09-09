@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,24 +20,65 @@ namespace TrainingManagementSystem.Business.Services
         {
             this.unitOfWork = unitOfWork;
         }
-        public IEnumerable<CourseVM> GetAll(string searchWord = null)
-        {
-            var courses = unitOfWork.Courses.GetAll(includeProperties: "Instructor");
 
-            if (!string.IsNullOrEmpty(searchWord))
+        //public IEnumerable<CourseVM> GetAll(string searchWord = null)
+        //{
+        //    var courses = unitOfWork.Courses.GetAll(includeProperties: "Instructor");
+
+        //    if (!string.IsNullOrEmpty(searchWord))
+        //    {
+        //        courses = courses.Where(c => c.Name.Contains(searchWord, StringComparison.OrdinalIgnoreCase)
+        //                                  || c.Category.Contains(searchWord, StringComparison.OrdinalIgnoreCase));
+        //    }
+
+        //    return courses.Select(c => new CourseVM
+        //    {
+        //        Id = c.Id,
+        //        Name = c.Name,
+        //        Category = c.Category,
+        //        InstructorId = c.InstructorId,
+        //        InstructorName = c.Instructor != null ? c.Instructor.Name : ""
+        //    }).ToList();
+        //}
+
+
+        public CourseIndexViewModel GetCourses(string searchTerm, int pageNumber = 1, int pageSize = 10)
+        {
+            var query = unitOfWork.Courses.GetAll(includeProperties: "Instructor");
+
+            // Search functionality (Ignor Case)
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                courses = courses.Where(c => c.Name.Contains(searchWord, StringComparison.OrdinalIgnoreCase)
-                                          || c.Category.Contains(searchWord, StringComparison.OrdinalIgnoreCase));
+                string lowerSearchTerm = searchTerm.ToLower();
+
+                query = query.Where(c => c.Name.ToLower().Contains(lowerSearchTerm)
+                                      || c.Category.ToLower().Contains(lowerSearchTerm)
+                                      || c.Instructor.Name.ToLower().Contains(lowerSearchTerm));
             }
 
-            return courses.Select(c => new CourseVM
+            var totalCourses = query.Count();
+            var totalPages = (int)Math.Ceiling(totalCourses / (double)pageSize);
+
+            var courses = query
+                .OrderBy(c => c.Name)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CourseVM
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Category = c.Category,
+                    InstructorName = c.Instructor.Name
+                })
+                .ToList();
+
+            return new CourseIndexViewModel
             {
-                Id = c.Id,
-                Name = c.Name,
-                Category = c.Category,
-                InstructorId = c.InstructorId,
-                InstructorName = c.Instructor != null ? c.Instructor.Name : ""
-            }).ToList();
+                Courses = courses,
+                SearchTerm = searchTerm,
+                CurrentPage = pageNumber,
+                TotalPages = totalPages
+            };
         }
         public CourseVM GetById(int id)
         {

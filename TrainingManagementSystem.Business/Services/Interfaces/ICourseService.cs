@@ -9,7 +9,8 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
 {
     public interface ICourseService
     {
-        IEnumerable<CourseVM> GetAll(string searchWord = null);
+        //IEnumerable<CourseVM> GetAll(string searchWord = null);
+        CourseIndexViewModel GetCourses(string searchTerm, int pageNumber = 1, int pageSize = 10);
         CourseVM GetById(int id);
         void Create(CourseVM model);
         void Update(CourseVM model);

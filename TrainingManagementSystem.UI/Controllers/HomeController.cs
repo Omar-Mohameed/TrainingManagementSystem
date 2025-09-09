@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TrainingManagementSystem.DataAccess.Data;
 using TrainingManagementSystem.DataAccess.Models;
 
 namespace TrainingManagementSystem.UI.Controllers
@@ -7,14 +8,18 @@ namespace TrainingManagementSystem.UI.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext context;
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
         {
+            ViewBag.Courses = context.Courses.Count();
+            ViewBag.Users = context.Users.Count();
+            ViewBag.Sessions = context.Sessions.Count();
             return View();
         }
 

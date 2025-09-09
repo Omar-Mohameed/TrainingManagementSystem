@@ -17,18 +17,10 @@ namespace TrainingManagementSystem.UI.Controllers
             this.userService = userService;
         }
         // Get All
-        public IActionResult Index(string searchTerm, int pageNumber = 1, int pageSize = 5)
+        public IActionResult Index(string searchTerm, int pageNumber = 1)
         {
-            var courses = courseService.GetAll(searchTerm);
-
-            var totalCount = courses.Count();
-            var pagedCourses = courses.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
-
-            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-            ViewBag.CurrentPage = pageNumber;
-            ViewBag.searchTerm = searchTerm;
-
-            return View(pagedCourses);
+            var coursesIndexVM = courseService.GetCourses(searchTerm, pageNumber);
+            return View(coursesIndexVM);
         }
         [HttpGet]
         public IActionResult Create()
@@ -86,7 +78,7 @@ namespace TrainingManagementSystem.UI.Controllers
         #region Delete
         public IActionResult Delete(int id)
         {
-            var course = courseService.GetAll().FirstOrDefault(c => c.Id == id);
+            var course = courseService.GetById(id);
             if (course == null)
             {
                 return Json(new { success = false, message = "Course not found!" });
