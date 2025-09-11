@@ -15,7 +15,9 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
         void Create(CourseVM model);
         void Update(CourseVM model);
         void Delete(int id);
-        bool IsCourseNameUnique(string name, int id);
+        void DeleteCourseSoft(int id); // Soft Delete
 
+        bool IsCourseNameUnique(string name, int id);
+        bool IsCourseCodeUnique(string code, int id);
     }
 }

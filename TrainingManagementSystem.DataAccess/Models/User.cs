@@ -24,5 +24,8 @@ namespace TrainingManagementSystem.DataAccess.Models
         public ICollection<Grade> Grades { get; set; }
         public ICollection<Course> Courses { get; set; }
 
+        // Soft Delete
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

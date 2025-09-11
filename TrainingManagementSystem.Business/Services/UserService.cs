@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TrainingManagementSystem.Business.Services.Interfaces;
 using TrainingManagementSystem.Business.ViewModels;
 using TrainingManagementSystem.DataAccess.Models;
+using TrainingManagementSystem.DataAccess.Repositories;
 using TrainingManagementSystem.DataAccess.Repositories.Interfaces;
 
 namespace TrainingManagementSystem.Business.Services
@@ -114,6 +115,16 @@ namespace TrainingManagementSystem.Business.Services
         {
             var existingUser = _unitOfWork.Users.GetFirstOrDefault(u => u.Email == email && u.Id != id);
             return existingUser == null;
+        }
+
+        public void DeleteUserSoft(int id)
+        {
+            var user = _unitOfWork.Users.GetFirstOrDefault(u => u.Id == id);
+            if (user != null)
+            {
+                _unitOfWork.Users.SoftDelete(user);
+                _unitOfWork.Save();
+            }
         }
     }
 }

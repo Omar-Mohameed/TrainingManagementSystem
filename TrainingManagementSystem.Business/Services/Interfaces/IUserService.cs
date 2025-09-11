@@ -17,7 +17,8 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
         User GetUserById(int id);
         void CreateUser(UserVM userVM);
         void UpdateUser(UserVM userVM);
-        void DeleteUser(int id);
+        void DeleteUser(int id);  // Hard Delete
+        void DeleteUserSoft(int id); // Soft Delete
         bool IsEmailUnique(string email, int id);
 
     }

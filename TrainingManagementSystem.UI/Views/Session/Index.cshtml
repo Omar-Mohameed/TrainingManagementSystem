@@ -11,7 +11,7 @@
 <!--Alert-->
 
 <form method="get" asp-action="Index" class="form-inline mb-3">
-    <input type="text" name="searchCourseName" value="@Model.SearchCourseName" class="form-control mr-2" placeholder="Search by Course Name" />
+    <input type="text" name="searchCourseName" value="@Model.SearchCourseName" class="form-control mr-2" placeholder="Search by Course Name, Title..." />
     <button type="submit" class="btn btn-primary">Search</button>
     <a asp-action="Index" class="btn btn-secondary ml-2">Reset</a>
 </form>
@@ -21,6 +21,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Title</th>
             <th>Course</th>
             <th>Instructor</th>
             <th>Start Date</th>
@@ -36,6 +37,7 @@
             foreach (var session in Model.Sessions)
             {
                 <tr>
+                    <td>@session.Title</td>
                     <td>@session.CourseName</td>
                     <td>@session.InstructorName</td>
                     <td>@session.StartDate.ToString("yyyy-MM-dd")</td>
@@ -83,7 +85,7 @@
 
 <nav>
     <ul class="pagination">
-        @if (Model.TotalPages > 1)
+        @if (Model.TotalPages >= 1)
         {
             <!-- First Page -->
             <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">

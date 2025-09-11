@@ -74,5 +74,19 @@ namespace TrainingManagementSystem.DataAccess.Repositories
 
             return query.FirstOrDefault();
         }
+
+        public void SoftDelete(T entity)
+        {
+            var property = entity.GetType().GetProperty("IsDeleted");
+            if (property != null)
+            {
+                property.SetValue(entity, true);
+                _dbSet.Update(entity);
+            }
+            else
+            {
+                throw new InvalidOperationException($"{typeof(T).Name} does not support soft delete.");
+            }
+        }
     }
 }

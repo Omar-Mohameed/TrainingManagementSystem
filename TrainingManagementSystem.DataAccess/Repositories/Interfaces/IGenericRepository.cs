@@ -16,6 +16,7 @@ namespace TrainingManagementSystem.DataAccess.Repositories.Interfaces
             string includeProperties = null
         );
         void Add(T entity);
-        void Delete(int id);
+        void Delete(int id); // hard delete
+        void SoftDelete(T entity); // Soft Delete
     }
 }

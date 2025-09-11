@@ -71,7 +71,7 @@ namespace TrainingManagementSystem.UI.Controllers
             {
                 return Json(new { success = false, message = "Course not found!" });
             }
-            userService.DeleteUser(id);
+            userService.DeleteUserSoft(id);
             return Json(new { success = true, message = "Course deleted successfully!" });
         }
         // Remote Validation for Unique Email

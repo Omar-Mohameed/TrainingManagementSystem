@@ -14,6 +14,7 @@ namespace TrainingManagementSystem.DataAccess.Models
 
         [Required(ErrorMessage = "Code is required")]
         [StringLength(20)]
+        [Remote(action: "IsCourseCodeUnique", controller: "Course", AdditionalFields = "Id")]
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Course name is required.")]
@@ -32,6 +33,9 @@ namespace TrainingManagementSystem.DataAccess.Models
         public int InstructorId { get; set; }  // FK
         public User Instructor { get; set; }
         public ICollection<Session> Sessions { get; set; }
+
+        // Soft Delete Flag
+        public bool IsDeleted { get; set; } = false;
 
     }
 }

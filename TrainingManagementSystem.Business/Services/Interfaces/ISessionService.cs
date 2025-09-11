@@ -15,7 +15,8 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
         SessionVM GetSessionById(int id);
         void CreateSession(SessionVM model);
         bool UpdateSession(SessionVM model);
-        bool DeleteSession(int id);
+        bool DeleteSession(int id); // Hard Delete
+        void DeleteSessionSoft(int id); // Soft Delete
         // Helpers
         IEnumerable<SelectListItem> GetCoursesDropdown();
         IEnumerable<SelectListItem> GetInstructorsDropdown();
@@ -24,5 +25,6 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
         // For Remote Validation
         bool ValidateStartDate(DateTime startDate);
         bool ValidateEndDate(DateTime startDate, DateTime endDate);
+        bool IsTitleUnique(string title, int id);
     }
 }

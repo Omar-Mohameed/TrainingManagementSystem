@@ -19,5 +19,8 @@ namespace TrainingManagementSystem.DataAccess.Models
         [Required(ErrorMessage = "Trainee is required.")]
         public int TraineeId { get; set; }
         public User Trainee { get; set; }
+
+        // Soft Delete
+        public bool IsDeleted { get; set; } = false;
     }
 }

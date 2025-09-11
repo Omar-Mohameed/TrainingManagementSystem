@@ -19,12 +19,14 @@ namespace TrainingManagementSystem.Business.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public SessionSearchViewModel GetSessions(string searchCourseName, int pageNumber, int pageSize)
+        public SessionSearchViewModel GetSessions(string searchTerm, int pageNumber, int pageSize)
         {
             var query = _unitOfWork.Sessions.GetAll(includeProperties: "Course,Instructor");
-            if (!string.IsNullOrEmpty(searchCourseName))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(s => s.Course.Name.Contains(searchCourseName));
+                var lowerSearchTerm = searchTerm.ToLower();
+                query = query.Where(s => s.Course.Name.ToLower().Contains(searchTerm)
+                                    || s.Title.ToLower().Contains(lowerSearchTerm));
             }
             var totalRecords = query.Count();
 
@@ -35,6 +37,7 @@ namespace TrainingManagementSystem.Business.Services
                 .Select(s => new SessionVM
                 {
                     Id = s.Id,
+                    Title = s.Title,
                     CourseId = s.CourseId,
                     CourseName = s.Course.Name,
                     StartDate = s.StartDate,
@@ -48,7 +51,7 @@ namespace TrainingManagementSystem.Business.Services
             return new SessionSearchViewModel
             {
                 Sessions = sessions,
-                SearchCourseName = searchCourseName,
+                SearchCourseName = searchTerm,
                 CurrentPage = pageNumber,
                 TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize)
             };
@@ -60,6 +63,7 @@ namespace TrainingManagementSystem.Business.Services
             return new SessionVM
             {
                 Id = session.Id,
+                Title = session.Title,
                 CourseId = session.CourseId,
                 CourseName = session.Course.Name,
                 StartDate = session.StartDate,
@@ -74,6 +78,7 @@ namespace TrainingManagementSystem.Business.Services
         {
             var session = new Session
             {
+                Title = model.Title,
                 CourseId = model.CourseId,
                 StartDate = model.StartDate,
                 EndDate = model.EndDate,
@@ -133,6 +138,7 @@ namespace TrainingManagementSystem.Business.Services
             var session = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == model.Id, includeProperties: "Course,Instructor");
             if (session == null) return false;
 
+            session.Title = model.Title;
             session.CourseId = model.CourseId;
             session.InstructorId = model.InstructorId;
             session.StartDate = model.StartDate;
@@ -156,6 +162,22 @@ namespace TrainingManagementSystem.Business.Services
         {
             // End date must be after start date
             return endDate.Date > startDate.Date;
+        }
+
+        public bool IsTitleUnique(string title, int id)
+        {
+            var existingSession = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Title == title && s.Id != id);
+            return existingSession == null;
+        }
+
+        public void DeleteSessionSoft(int id)
+        {
+            var sesstion = _unitOfWork.Sessions.GetFirstOrDefault(s => s.Id == id);
+            if (sesstion != null)
+            {
+                _unitOfWork.Sessions.SoftDelete(sesstion);
+                _unitOfWork.Save();
+            }
         }
     }
 }

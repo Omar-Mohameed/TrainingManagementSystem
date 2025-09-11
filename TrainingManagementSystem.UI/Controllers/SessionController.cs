@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TrainingManagementSystem.Business.Services;
 using TrainingManagementSystem.Business.Services.Interfaces;
 using TrainingManagementSystem.Business.ViewModels;
+using TrainingManagementSystem.DataAccess.Models;
 
 namespace TrainingManagementSystem.UI.Controllers
 {
@@ -67,11 +69,12 @@ namespace TrainingManagementSystem.UI.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            var deleted = _sessionService.DeleteSession(id);
-            if (!deleted)
+            var sesstion = _sessionService.GetSessionById(id);
+            if (sesstion == null)
             {
-                return Json(new { success = false, message = "Error while deleting session" });
+                return Json(new { success = false, message = "sesstion not found!" });
             }
+            _sessionService.DeleteSessionSoft(id);
 
             return Json(new { success = true, message = "Session deleted successfully" });
         }
@@ -93,6 +96,15 @@ namespace TrainingManagementSystem.UI.Controllers
                 return Json(true);
             }
             return Json("End date must be after Start Date.");
+        }
+        // Remote Validation for Unique Title
+        public IActionResult IsTitleUnique(string title, int id)
+        {
+            if (_sessionService.IsTitleUnique(title, id))
+            {
+                return Json(true);
+            }
+            return Json($"The session title '{title}' already exists.");
         }
     }
 }

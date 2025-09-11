@@ -83,7 +83,7 @@ namespace TrainingManagementSystem.UI.Controllers
             {
                 return Json(new { success = false, message = "Course not found!" });
             }
-            courseService.Delete(id);
+            courseService.DeleteCourseSoft(id);
             return Json(new { success = true, message = "Course deleted successfully!" });
         }
         #endregion
@@ -93,6 +93,16 @@ namespace TrainingManagementSystem.UI.Controllers
         {
             var isUnique = courseService.IsCourseNameUnique(name, id);
             return Json(isUnique);
+        }
+        // Check Unique Code
+        public IActionResult IsCourseCodeUnique(string code, int id)
+        {
+            var isUnique = courseService.IsCourseCodeUnique(code, id);
+            if(!isUnique)
+            {
+                return Json($"The course code '{code}' is already taken.");
+            }
+            return Json(true);
         }
     }
 }

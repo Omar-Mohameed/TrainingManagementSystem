@@ -21,10 +21,18 @@ namespace TrainingManagementSystem.DataAccess.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            // لكل الكيانات اللي فيها IsDeleted
+            modelBuilder.Entity<Course>().HasQueryFilter(c => !c.IsDeleted);
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<Session>().HasQueryFilter(s => !s.IsDeleted);
+            modelBuilder.Entity<Grade>().HasQueryFilter(g => !g.IsDeleted);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace TrainingManagementSystem.Business.ViewModels
 
         [Required(ErrorMessage = "Code is required")]
         [StringLength(20)]
+        [Remote(action: "IsCourseCodeUnique", controller: "Course", AdditionalFields = "Id")]
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Course name is required.")]

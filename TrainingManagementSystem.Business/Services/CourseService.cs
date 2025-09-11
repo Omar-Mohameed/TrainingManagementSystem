@@ -44,7 +44,7 @@ namespace TrainingManagementSystem.Business.Services
 
         public CourseIndexViewModel GetCourses(string searchTerm, int pageNumber = 1, int pageSize = 5)
         {
-            var query = unitOfWork.Courses.GetAll(includeProperties: "Instructor");
+            var query = unitOfWork.Courses.GetAll(c=>!c.IsDeleted, includeProperties: "Instructor");
 
             // Search functionality (Ignor Case)
             if (!string.IsNullOrEmpty(searchTerm))
@@ -141,5 +141,24 @@ namespace TrainingManagementSystem.Business.Services
             return unitOfWork.Courses.IsCourseNameUnique(name, id);
         }
 
+        public bool IsCourseCodeUnique(string code, int id)
+        {
+            var existingCourse = unitOfWork.Courses.GetFirstOrDefault(c => c.Code == code && c.Id != id);
+            if (existingCourse != null)
+            {
+                return false;                
+            }
+            return true;
+        }
+
+        public void DeleteCourseSoft(int id)
+        {
+            var course = unitOfWork.Courses.GetFirstOrDefault(c => c.Id == id);
+            if (course != null)
+            {
+                unitOfWork.Courses.SoftDelete(course);
+                unitOfWork.Save();
+            }
+        }
     }
 }

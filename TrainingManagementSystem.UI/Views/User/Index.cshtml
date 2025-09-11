@@ -47,7 +47,20 @@
             <tr>
                 <td>@user.Name</td>
                 <td>@user.Email</td>
-                <td>@user.Role</td>
+                <td>
+                    @if (user.Role == "Admin")
+                    {
+                        <span class="badge bg-danger">Admin</span>
+                    }
+                    else if (user.Role == "Instructor")
+                    {
+                        <span class="badge bg-primary">Instructor</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-info">Student</span>
+                    }
+                </td>
                 <td>
                     @if (user.IsActive)
                     {
