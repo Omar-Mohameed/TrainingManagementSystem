@@ -12,7 +12,11 @@ namespace TrainingManagementSystem.DataAccess.Repositories.Interfaces
     public interface IGradeRepository : IGenericRepository<Grade>
     {
         //View grades per trainee(with pagination).
-        IEnumerable<Grade> GetGradesByTrainee(int traineeId, int page, int pageSize, out int totalCount);
+        IEnumerable<Grade> GetGradesByTrainee(int traineeId, int pageNumber, int pageSize);
+        void Update(Grade grade);
+
+        int GetGradesCountByTrainee(int traineeId);
+
         // Check if grade already exists for this Trainee & Session
         bool GradeExists(int traineeId, int sessionId);
     }

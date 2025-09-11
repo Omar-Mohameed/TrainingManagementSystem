@@ -1,0 +1,49 @@
+﻿@model GradeVM
+
+<div class="container mt-5">
+    <h2>Record Grade</h2>
+    <form asp-action="Create" method="post">
+
+        <!-- Session Dropdown -->
+        <div class="mb-3">
+            <label asp-for="SessionId" class="form-label"></label>
+            <select asp-for="SessionId" asp-items="Model.Sessions" class="form-select">
+                <option value="">-- Select Session --</option>
+            </select>
+            <span asp-validation-for="SessionId" class="text-danger"></span>
+        </div>
+
+        <!-- Trainee Dropdown -->
+        <div class="mb-3">
+            <label asp-for="TraineeId" class="form-label"></label>
+            <select asp-for="TraineeId" asp-items="Model.Trainees" class="form-select">
+                <option value="">-- Select Trainee --</option>
+            </select>
+            <span asp-validation-for="TraineeId" class="text-danger"></span>
+        </div>
+
+        <!-- Instructor Dropdown -->
+        <div class="mb-3">
+            <label asp-for="GradeById" class="form-label"></label>
+            <select asp-for="GradeById" asp-items="Model.Instructors" class="form-select">
+                <option value="">-- Select Instructor --</option>
+            </select>
+            <span asp-validation-for="GradeById" class="text-danger"></span>
+        </div>
+
+        <!-- Grade Input -->
+        <div class="mb-3">
+            <label asp-for="Value" class="form-label"></label>
+            <input asp-for="Value" class="form-control" />
+            <span asp-validation-for="Value" class="text-danger"></span>
+        </div>
+
+        <!-- Comments -->
+        <div class="mb-3">
+            <label asp-for="Comments" class="form-label"></label>
+            <textarea asp-for="Comments" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Grade</button>
+    </form>
+</div>

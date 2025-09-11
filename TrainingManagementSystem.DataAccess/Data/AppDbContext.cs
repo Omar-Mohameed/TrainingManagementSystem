@@ -33,6 +33,20 @@ namespace TrainingManagementSystem.DataAccess.Data
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
             modelBuilder.Entity<Session>().HasQueryFilter(s => !s.IsDeleted);
             modelBuilder.Entity<Grade>().HasQueryFilter(g => !g.IsDeleted);
+
+            // علاقة Grade مع Trainee
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Trainee)
+                .WithMany()
+                .HasForeignKey(g => g.TraineeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // علاقة Grade مع GradeBy (اللي سجل الدرجة)
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.GradeBy)
+                .WithMany()
+                .HasForeignKey(g => g.GradeById)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

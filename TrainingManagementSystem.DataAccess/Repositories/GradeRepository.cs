@@ -17,24 +17,40 @@ namespace TrainingManagementSystem.DataAccess.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Grade> GetGradesByTrainee(int traineeId, int page, int pageSize, out int totalCount)
+        public IEnumerable<Grade> GetGradesByTrainee(int traineeId, int pageNumber, int pageSize)
         {
-            var query = _context.Grades
+            return _context.Grades
                 .Include(g => g.Session)
-                .Where(g => g.TraineeId == traineeId);
-
-            totalCount = query.Count();
-
-            return query
-                .OrderByDescending(g => g.Session.StartDate)
-                .Skip((page - 1) * pageSize)
+                .Include(g => g.Trainee)
+                .Include(g => g.GradeBy)
+                .Where(g => g.TraineeId == traineeId && !g.IsDeleted)
+                .OrderByDescending(g => g.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+        }
+        public int GetGradesCountByTrainee(int traineeId)
+        {
+            return _context.Grades.Count(g => g.TraineeId == traineeId && !g.IsDeleted);
         }
 
         public bool GradeExists(int traineeId, int sessionId)
         {
             return _context.Grades.Any(g => g.TraineeId == traineeId && g.SessionId == sessionId);
+        }
+
+        public void Update(Grade grade)
+        {
+            var GradeInDb = _context.Grades.FirstOrDefault(g => g.Id == grade.Id);
+            if (GradeInDb != null)
+            {
+                GradeInDb.SessionId = grade.SessionId;
+                GradeInDb.TraineeId = grade.TraineeId;
+                GradeInDb.GradeById = grade.GradeById;
+                GradeInDb.Value = grade.Value;
+                GradeInDb.Comments = grade.Comments;
+                GradeInDb.CreatedAt = DateTime.Now;
+            }
         }
     }
 }

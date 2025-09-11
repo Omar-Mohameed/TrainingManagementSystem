@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TrainingManagementSystem.Business.Services.Interfaces;
+using TrainingManagementSystem.Business.ViewModels;
 using TrainingManagementSystem.DataAccess.Models;
 using TrainingManagementSystem.DataAccess.Repositories.Interfaces;
 
@@ -17,10 +19,91 @@ namespace TrainingManagementSystem.Business.Services
         {
             _unitOfWork = unitOfWork;
         }
-        public IEnumerable<Grade> GetAllGrades()
+        public GradeIndexVM GetAllGrades(string searchTerm , int pageNumber, int pageSize=5)
         {
-            return _unitOfWork.Grades.GetAll();
+            var query = _unitOfWork.Grades.GetAll(
+                        filter: g => !g.IsDeleted,
+                        includeProperties: "Session,Trainee,GradeBy");
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                searchTerm = searchTerm.ToLower();
+
+                query = query.Where(g =>
+                    g.Session.Title.ToLower().Contains(searchTerm) ||
+                    g.Trainee.Name.ToLower().Contains(searchTerm) 
+                );
+            }
+            int totalCount = query.Count();
+
+            var grades = query
+            .OrderByDescending(g => g.CreatedAt)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(g => new GradeVM
+            {
+                Id = g.Id,
+                SessionName = g.Session.Title,
+                TraineeName = g.Trainee.Name,
+                GradeById = g.GradeBy.Id,
+                InstructorName = g.GradeBy.Name,
+                Value = g.Value,
+                Comments = g.Comments,
+                CreateAt = g.CreatedAt
+            })
+            .ToList();
+            return new GradeIndexVM
+            {
+                Grades = grades,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                SearchTerm = searchTerm
+            };
         }
+        public IEnumerable<GradeVM> GetGradesForTrainee(int traineeId, int pageNumber, int pageSize=5)
+        {
+            var totalRecords = _unitOfWork.Grades.GetGradesCountByTrainee(traineeId);
+
+            var grades = _unitOfWork.Grades.GetGradesByTrainee(traineeId, pageNumber, pageSize);
+
+            return grades.Select(g => new GradeVM
+            {
+                Id = g.Id,
+                SessionName = g.Session.Title,
+                TraineeName = g.Trainee.Name,
+                InstructorName = g.GradeBy.Name,
+                Value = g.Value,
+                Comments = g.Comments,
+                CreateAt = g.CreatedAt
+            });
+        }
+        public Grade GetGradeById(int id)
+        {
+            return _unitOfWork.Grades.GetFirstOrDefault(
+            filter: g => g.Id == id && !g.IsDeleted,
+            includeProperties: "Session,Trainee,GradeBy");
+        }
+        public void CreateGrade(GradeVM model)
+        {
+            var grade = new Grade
+            {
+                SessionId = model.SessionId,
+                TraineeId = model.TraineeId,
+                GradeById = model.GradeById,
+                Value = model.Value,
+                Comments = model.Comments,
+                CreatedAt = DateTime.Now,
+            };
+
+            _unitOfWork.Grades.Add(grade);
+            _unitOfWork.Save();
+        }
+        public void UpdateGrade(Grade grade)
+        {
+            _unitOfWork.Grades.Update(grade);
+            _unitOfWork.Save();
+        }
+
         public void DeleteGradeSoft(int id)
         {
             var grade = _unitOfWork.Grades.GetFirstOrDefault(g => g.Id == id);
