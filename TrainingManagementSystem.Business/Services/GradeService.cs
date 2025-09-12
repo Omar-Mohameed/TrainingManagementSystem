@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +113,33 @@ namespace TrainingManagementSystem.Business.Services
                 _unitOfWork.Grades.SoftDelete(grade);
                 _unitOfWork.Save();
             }
+        }
+
+        public GradeVM GetCreateVM()  // return view model with dropdown Lists for sessions, trainees, instructors
+        {
+            return new GradeVM
+            {
+                Sessions = GetSessionsDropdown(),
+
+                Trainees = GetTraineesDropdown(),
+
+                Instructors = GetInstructorsDropdown()
+            };
+        }
+        public IEnumerable<SelectListItem> GetSessionsDropdown()
+        {
+            return _unitOfWork.Sessions.GetAll(s => !s.IsDeleted).OrderBy(s=>s.Title)
+                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }).ToList();
+        }
+        public IEnumerable<SelectListItem> GetTraineesDropdown()
+        {
+            return _unitOfWork.Users.GetAll(u => u.Role == "Trainee" && !u.IsDeleted).OrderBy(u=>u.Name)
+                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name }).ToList();
+        }
+        public IEnumerable<SelectListItem> GetInstructorsDropdown()
+        {
+            return _unitOfWork.Users.GetAll(u => u.Role == "Instructor" && !u.IsDeleted).OrderBy(u=>u.Name)
+                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name }).ToList();
         }
     }
 }

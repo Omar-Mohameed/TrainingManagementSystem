@@ -10,13 +10,11 @@ namespace TrainingManagementSystem.UI.Controllers
     public class GradeController : Controller
     {
         private readonly IGradeService _gradeService;
-        private readonly IUnitOfWork _unitOfWork;
 
 
-        public GradeController(IGradeService gradeService, IUnitOfWork unitOfWork)
+        public GradeController(IGradeService gradeService)
         {
             _gradeService = gradeService;
-            _unitOfWork = unitOfWork;
         }
         public IActionResult Index(string searchTerm, int pageNumber = 1)
         {
@@ -28,18 +26,7 @@ namespace TrainingManagementSystem.UI.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var model = new GradeVM
-            {
-                Sessions = _unitOfWork.Sessions.GetAll(s => !s.IsDeleted)
-                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title }),
-
-                Trainees = _unitOfWork.Users.GetAll(u => u.Role == "Trainee" && !u.IsDeleted)
-                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name }),
-
-                Instructors = _unitOfWork.Users.GetAll(u => u.Role == "Instructor" && !u.IsDeleted)
-                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name })
-            };
-
+            var model = _gradeService.GetCreateVM();  // return view model with dropdown Lists for sessions, trainees, instructors
             return View(model);
         }
         [HttpPost]
@@ -47,14 +34,11 @@ namespace TrainingManagementSystem.UI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                model.Sessions = _unitOfWork.Sessions.GetAll(s => !s.IsDeleted)
-                    .Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Title });
+                model.Sessions = _gradeService.GetSessionsDropdown();
 
-                model.Trainees = _unitOfWork.Users.GetAll(u => u.Role == "Trainee" && !u.IsDeleted)
-                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name });
+                model.Trainees = _gradeService.GetTraineesDropdown();
 
-                model.Instructors = _unitOfWork.Users.GetAll(u => u.Role == "Instructor" && !u.IsDeleted)
-                    .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.Name });
+                model.Instructors = _gradeService.GetInstructorsDropdown();
 
                 return View(model);
             }

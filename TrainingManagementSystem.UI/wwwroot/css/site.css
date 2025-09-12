@@ -40,3 +40,15 @@ body {
     color: #0f5132;
 }
 
+.bg-orange {
+    background-color: #fd7e14 !important;
+    color: white !important;
+}
+
+.badge {
+    border-radius: 8px;
+    font-weight: 600;
+    min-width: 60px;
+    display: inline-block;
+    text-align: center;
+}

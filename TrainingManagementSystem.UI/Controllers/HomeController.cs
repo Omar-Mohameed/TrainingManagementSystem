@@ -20,6 +20,7 @@ namespace TrainingManagementSystem.UI.Controllers
             ViewBag.Courses = context.Courses.Count();
             ViewBag.Users = context.Users.Count();
             ViewBag.Sessions = context.Sessions.Count();
+            ViewBag.Grades = context.Grades.Count();
             return View();
         }
 

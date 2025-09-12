@@ -21,7 +21,7 @@ namespace TrainingManagementSystem.UI.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var sessionVM = _sessionService.GetCreateVM();
+            var sessionVM = _sessionService.GetCreateVM();  // return view model with dropdown 
             return View(sessionVM);
         }
         [HttpPost]

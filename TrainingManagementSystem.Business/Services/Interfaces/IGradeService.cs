@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,9 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
 
         void DeleteGradeSoft(int id); // Soft Delete
         GradeIndexVM GetAllGrades(string searchTerm, int pageNumber, int pageSize = 5);
+        GradeVM GetCreateVM();  // return view model with dropdown Lists for sessions, trainees, instructors
+        IEnumerable<SelectListItem> GetSessionsDropdown();
+        IEnumerable<SelectListItem> GetTraineesDropdown();
+        IEnumerable<SelectListItem> GetInstructorsDropdown();
     }
 }

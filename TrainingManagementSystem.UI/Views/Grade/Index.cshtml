@@ -39,12 +39,28 @@
             {
                 @foreach (var grade in Model.Grades)
                 {
+
+                    var badgeClass = grade.Value switch
+                    {
+                        >= 90 => "bg-success text-white",     // A
+                        >= 80 => "bg-primary text-white",     // B
+                        >= 70 => "bg-warning text-dark",      // C
+                        >= 60 => "bg-orange text-white",      // D
+                        _ => "bg-danger text-white"           // F
+                    };
+
+
+
                     <tr>
                         <td>@grade.SessionName</td>
                         <td>@grade.TraineeName</td>
                         <td>@grade.InstructorName</td>
                         <td>@grade.InstructorName</td>
-                        <td>@grade.Value</td>
+                        <td>
+                            <span class="badge @badgeClass fs-6 px-3 py-2">
+                                @grade.Value
+                            </span>
+                        </td>
                         <td>@grade.Comments</td>
                         <td>@grade.CreateAt.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
