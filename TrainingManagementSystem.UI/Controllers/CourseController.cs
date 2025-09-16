@@ -23,6 +23,18 @@ namespace TrainingManagementSystem.UI.Controllers
             return View(coursesIndexVM);
         }
         [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var course = courseService.GetById(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
+        }
+
+        [HttpGet]
         public IActionResult Create()
         {
             var courseVM = new CourseVM

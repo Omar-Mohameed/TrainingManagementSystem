@@ -62,10 +62,13 @@
                         <td>@grade.Comments</td>
                         <td>@grade.CreateAt.ToString("yyyy-MM-dd HH:mm")</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@grade.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <a asp-action="Edit" asp-route-id="@grade.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square me-1"></i> Edit</a>
+                            <a asp-action="Details" asp-route-id="@grade.Id" class="btn btn-outline-info btn-sm me-1">
+                                <i class="bi bi-eye"></i> Details
+                            </a>
                             <a class="btn btn-sm btn-outline-danger"
                                onclick=DeleteItem("/Grade/Delete/@grade.Id")>
-                                Delete
+                                <i class="bi bi-trash me-1"></i> Delete
                             </a>
                         </td>
 

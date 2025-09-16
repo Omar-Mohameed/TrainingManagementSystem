@@ -19,6 +19,26 @@ namespace TrainingManagementSystem.UI.Controllers
             var model = userService.GetUsers(searchName, searchRole, pageNumber);
             return View(model);
         }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var user = userService.GetUserById(id);
+            UserVM userVM = new UserVM
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                Role = user.Role,
+                IsActive = user.IsActive
+            };
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(userVM);
+        }
+
 
         [HttpGet]
         public IActionResult Create()

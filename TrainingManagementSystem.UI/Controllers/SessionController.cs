@@ -24,6 +24,18 @@ namespace TrainingManagementSystem.UI.Controllers
             var sessionVM = _sessionService.GetCreateVM();  // return view model with dropdown 
             return View(sessionVM);
         }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var session = _sessionService.GetSessionById(id);
+            if (session == null)
+            {
+                return NotFound();
+            }
+
+            return View(session);
+        }
+
         [HttpPost]
         public IActionResult Create(SessionVM model)
         {

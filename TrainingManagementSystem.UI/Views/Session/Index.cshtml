@@ -67,8 +67,13 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-outline-secondary btn-sm">Edit</a>
-                        <button class="btn btn-outline-danger btn-sm" onClick=DeleteItem("/Session/Delete/@session.Id")>Delete</button>
+                        <a asp-action="Edit" asp-route-id="@session.Id" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil-square me-1"></i> Edit</a>
+                        <a asp-action="Details" asp-route-id="@session.Id" class="btn btn-outline-info btn-sm me-1">
+                            <i class="bi bi-eye"></i> Details
+                        </a>
+                        <button class="btn btn-outline-danger btn-sm" onClick=DeleteItem("/Session/Delete/@session.Id")>
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </button>
                     </td>
                 </tr>
             }

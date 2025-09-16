@@ -1,0 +1,74 @@
+﻿@model UserVM
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+
+            <!-- كارت تفاصيل المستخدم -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">User Details</h4>
+                </div>
+
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Name</dt>
+                        <dd class="col-sm-9">@Model.Name</dd>
+
+                        <dt class="col-sm-3">Email</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+
+                        <dt class="col-sm-3">Role</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.Role == "Admin")
+                            {
+                                <span class="badge bg-dark">Admin</span>
+                            }
+                            else if (Model.Role == "Instructor")
+                            {
+                                <span class="badge bg-info text-dark">Instructor</span>
+                            }
+                            else if (Model.Role == "Trainee")
+                            {
+                                <span class="badge bg-secondary">Trainee</span>
+                            }
+                            else
+                            {
+                                @Model.Role
+                            }
+                        </dd>
+
+                        <dt class="col-sm-3">Status</dt>
+                        <dd class="col-sm-9">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- الأزرار -->
+            <div class="mt-3">
+                <!-- Edit -->
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                    <i class="bi bi-pencil me-2"></i> Edit
+                </a>
+                <!-- Back to List -->
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left me-2"></i> Back to List
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

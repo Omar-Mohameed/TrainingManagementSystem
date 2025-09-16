@@ -21,6 +21,17 @@ namespace TrainingManagementSystem.UI.Controllers
             var grades = _gradeService.GetAllGrades(searchTerm,pageNumber);
             return View(grades);
         }
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var grade = _gradeService.GetGradeById(id);
+            if (grade == null)
+            {
+                return NotFound();
+            }
+            return View(grade);
+        }
+
 
         // Create Grade
         [HttpGet]
