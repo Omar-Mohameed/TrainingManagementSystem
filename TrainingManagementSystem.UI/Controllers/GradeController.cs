@@ -47,7 +47,7 @@ namespace TrainingManagementSystem.UI.Controllers
             {
                 _gradeService.CreateGrade(model);
 
-                TempData["Success"] = "Grade recorded successfully!";
+                TempData["SuccessMessage"] = "Grade recorded successfully!";
                 return RedirectToAction("Index", new { traineeId = model.TraineeId });
             }
 
