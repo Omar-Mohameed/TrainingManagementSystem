@@ -13,9 +13,9 @@ namespace TrainingManagementSystem.Business.Services.Interfaces
     public interface IGradeService
     {
         IEnumerable<GradeVM> GetGradesForTrainee(int traineeId, int pageNumber, int pageSize=5);
-        public Grade GetGradeById(int id);
+        public GradeVM GetGradeById(int id);
         void CreateGrade(GradeVM gradeVM);
-        public void UpdateGrade(Grade grade);
+        public void UpdateGrade(GradeVM gradeVM);
 
 
         void DeleteGradeSoft(int id); // Soft Delete

@@ -78,11 +78,28 @@ namespace TrainingManagementSystem.Business.Services
                 CreateAt = g.CreatedAt
             });
         }
-        public Grade GetGradeById(int id)
+        public GradeVM GetGradeById(int id)
         {
-            return _unitOfWork.Grades.GetFirstOrDefault(
+            var grade = _unitOfWork.Grades.GetFirstOrDefault(
             filter: g => g.Id == id && !g.IsDeleted,
             includeProperties: "Session,Trainee,GradeBy");
+            if (grade == null) return null;
+            return new GradeVM
+            {
+                Id = grade.Id,
+                SessionId = grade.SessionId,
+                SessionName = grade.Session.Title,
+                TraineeId = grade.TraineeId,
+                TraineeName = grade.Trainee.Name,
+                GradeById = grade.GradeById,
+                InstructorName = grade.GradeBy.Name,
+                Value = grade.Value,
+                Comments = grade.Comments,
+                CreateAt = grade.CreatedAt,
+                Sessions = GetSessionsDropdown(),
+                Trainees = GetTraineesDropdown(),
+                Instructors = GetInstructorsDropdown()
+            };
         }
         public void CreateGrade(GradeVM model)
         {
@@ -99,8 +116,17 @@ namespace TrainingManagementSystem.Business.Services
             _unitOfWork.Grades.Add(grade);
             _unitOfWork.Save();
         }
-        public void UpdateGrade(Grade grade)
+        public void UpdateGrade(GradeVM gradeVM)
         {
+            var grade = _unitOfWork.Grades.GetFirstOrDefault(g => g.Id == gradeVM.Id);
+
+            grade.Value = gradeVM.Value;
+            grade.Comments = gradeVM.Comments;
+            grade.TraineeId = gradeVM.TraineeId;
+            grade.SessionId = gradeVM.SessionId;
+            grade.GradeById = gradeVM.GradeById;
+
+
             _unitOfWork.Grades.Update(grade);
             _unitOfWork.Save();
         }

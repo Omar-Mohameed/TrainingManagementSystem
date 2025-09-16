@@ -1,8 +1,9 @@
 ﻿@model GradeVM
 
 <div class="container mt-5">
-    <h2>Record Grade</h2>
-    <form asp-action="Create" method="post">
+    <h2>Edit Grade</h2>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
 
         <!-- Session Dropdown -->
         <div class="mb-3">
@@ -44,9 +45,11 @@
             <textarea asp-for="Comments" class="form-control"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save Grade</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a  class="btn btn-primary" asp-action="Index">Cancel</a>
     </form>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

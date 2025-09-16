@@ -24,7 +24,7 @@ namespace TrainingManagementSystem.Business.ViewModels
         public string? InstructorName { get; set; }
 
         [Required(ErrorMessage = "Grade is required")]
-        [Range(0, 100, ErrorMessage = "Grade must be between 0 and 100")]
+        [Range(1, 100, ErrorMessage = "Grade must be between 1 and 100")]
         public decimal Value { get; set; }
         public string? Comments { get; set; }
         public DateTime CreateAt { get; set; } = DateTime.Now;

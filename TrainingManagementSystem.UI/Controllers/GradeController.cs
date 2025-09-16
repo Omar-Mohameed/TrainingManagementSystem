@@ -32,23 +32,41 @@ namespace TrainingManagementSystem.UI.Controllers
         [HttpPost]
         public IActionResult Create(GradeVM model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                model.Sessions = _gradeService.GetSessionsDropdown();
+                _gradeService.CreateGrade(model);
 
-                model.Trainees = _gradeService.GetTraineesDropdown();
-
-                model.Instructors = _gradeService.GetInstructorsDropdown();
-
-                return View(model);
+                TempData["Success"] = "Grade recorded successfully!";
+                return RedirectToAction("Index", new { traineeId = model.TraineeId });
             }
-            _gradeService.CreateGrade(model);
 
-            TempData["Success"] = "Grade recorded successfully!";
-            return RedirectToAction("Index", new { traineeId = model.TraineeId });
+            model.Sessions = _gradeService.GetSessionsDropdown();
+            model.Trainees = _gradeService.GetTraineesDropdown();
+            model.Instructors = _gradeService.GetInstructorsDropdown();
+            return View(model);
         }
 
-
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var gradevm = _gradeService.GetGradeById(id);
+            if (gradevm == null)
+            {
+                return NotFound();
+            }
+            return View(gradevm);
+        }
+        [HttpPost]
+        public IActionResult Edit(GradeVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                _gradeService.UpdateGrade(model);
+                TempData["SuccessMessage"] = "Grade updated successfully!";
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
 
         public IActionResult Delete(int id)
         {
